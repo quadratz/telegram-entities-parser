@@ -10,21 +10,18 @@ Specially designed for [grammY](https://grammy.dev/plugins/telegram-entities-par
 
 Probably NEVER!
 
-While this plugin can generate HTML, it’s generally best to send the text and entities back to Telegram.
+While this plugin can generate HTML, it's generally best to send the text and entities back to Telegram.
 
-Converting them to HTML is only necessary in rare cases where you need to use Telegram-formatted text **outside** of Telegram itself, such as:
-
-- Displaying Telegram messages on a website or web application
-- Sending Telegram messages to a non-Telegram platform
+Converting them to HTML is only necessary in rare cases where you need to use Telegram-formatted text **outside** of Telegram itself, such as displaying Telegram messages on a website.
 
 See the [_Cases When It's Better to Not Use This Package_](#cases-when-its-better-to-not-use-this-package) section to determine if you have a similar problem to solve.
 
-If you’re unsure whether this plugin is the right fit for your use case, please don’t hesitate to ask in our [Telegram group](https://t.me/grammyjs).
-In most cases, people find they don’t actually need this plugin to solve their problems!
+If you're unsure whether this plugin is the right fit for your use case, please don't hesitate to ask in our [Telegram group](https://t.me/grammyjs).
+In most cases, people find they don't actually need this plugin to solve their problems!
 
 ## Installation
 
-Run the following command in your terminal based on your package manager:
+Run the following command in your terminal based on your runtime or package manager:
 
 ```sh
 # Deno
@@ -42,7 +39,7 @@ npx jsr add @qz/telegram-entities-parser
 ## Simple Usage
 
 Using this plugin is straightforward.
-Here’s a quick example:
+Here's a quick example:
 
 ```ts
 import { EntitiesParser, type Message } from "@qz/telegram-entities-parser";
@@ -70,7 +67,7 @@ However, you might find that the provided output is not exactly what you expecte
 To address this, you can use your own `renderer` to customize the HTML elements surrounding the text according to your rules.
 You can modify specific rules by extending the default [`RendererHtml`](https://github.com/quadratz/telegram-entities-parser/blob/main/src/renderers/renderer_html.ts) or override all the rules by implementing the [`Renderer`](https://github.com/quadratz/telegram-entities-parser/blob/main/src/renderers/renderer.ts).
 
-To extend the existing renderer, do the following:
+To extend the existing `renderer`, do the following:
 
 ```ts
 import {
@@ -84,7 +81,7 @@ import {
 // but leave the rest of the types as defined by `RendererHtml`.
 class MyRenderer extends RendererHtml {
   bold(
-    option: { text: string; entity: CommonEntity },
+    options: { text: string; entity: CommonEntity },
   ): RendererOutput {
     return {
       prefix: `<strong class="tg-bold">`,
@@ -96,7 +93,7 @@ class MyRenderer extends RendererHtml {
 const entitiesParser = new EntitiesParser({ renderer: new MyRenderer() });
 ```
 
-The `option` parameter in the `renderer` method accepts an object with `text` and `entity`.
+The `options` parameter accepts an object with `text` and `entity`.
 
 - `text`: The specific text that the current entity refers to.
 - `entity`: This may be represented by various interfaces depending on the entity type, such as `CommonEntity`, `CustomEmojiEntity`, `PreEntity`, `TextLinkEntity`, or `TextMentionEntity`.
@@ -104,27 +101,27 @@ The `option` parameter in the `renderer` method accepts an object with `text` an
 
 Here is the full list of interfaces and the output for each entity type:
 
-| Entity Type          | Interface         | Result                                                                                                                                                                           |
-| -------------------- | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| blockquote           | CommonEntity      | `<blockquote class="tg-blockquote"> ... </blockquote>`                                                                                                                           |
-| bold                 | CommonEntity      | `<b class="tg-bold"> ... </b>`                                                                                                                                                   |
-| bot_command          | CommonEntity      | `<span class="tg-bot-command"> ... </span>`                                                                                                                                      |
-| cashtag              | CommonEntity      | `<span class="tg-cashtag"> ... </span>`                                                                                                                                          |
-| code                 | CommonEntity      | `<code class="tg-code"> ... </code>`                                                                                                                                             |
-| custom_emoji         | CustomEmojiEntity | `<span class="tg-custom-emoji" data-custom-emoji-id="${option.entity.custom_emoji_id}"> ... </span>`                                                                             |
-| email                | CommonEntity      | `<a class="tg-email" href="mailto:${option.text}"> ... </a>`                                                                                                                     |
-| expandableBlockquote | CommonEntity      | `<blockquote class="tg-expandable-blockquote"> ... </blockquote>`                                                                                                                |
-| hashtag              | CommonEntity      | `<span class="tg-hashtag"> ... </span>`                                                                                                                                          |
-| italic               | CommonEntity      | `<i class="tg-italic"> ... </i>`                                                                                                                                                 |
-| mention              | CommonEntity      | `<a class="tg-mention" href="https://t.me/${username}"> ... </a>`                                                                                                                |
-| phone_number         | CommonEntity      | `<a class="tg-phone-number" href="tel:${option.text}"> ... </a>`                                                                                                                 |
-| pre                  | PreEntity         | `<pre class="tg-pre-code"><code class="language-${option.entity.language} ... </code></pre>` or `<pre class="tg-pre"> ... </pre>`                                                |
-| spoiler              | CommonEntity      | `<span class="tg-spoiler"> ... </span>`                                                                                                                                          |
-| strikethrough        | CommonEntity      | `<del class="tg-strikethrough"> ... </del>`                                                                                                                                      |
-| text_link            | TextLinkEntity    | `<a class="tg-text-link" href="${option.entity.url}"> ... </a>`                                                                                                                  |
-| text_mention         | TextMentionEntity | `<a class="tg-text-mention" href="https://t.me/${option.entity.user.username}"> ... </a>` or `<a class="tg-text-mention" href="tg://user?id=${option.entity.user.id}"> ... </a>` |
-| underline            | CommonEntity      | `<span class="tg-bot-command"> ... </span>`                                                                                                                                      |
-| url                  | CommonEntity      | `<a class="tg-url" href="${option.text}"> ... </a>`                                                                                                                              |
+| Entity Type            | Interface           | Result                                                                                                                                                                             |
+| ---------------------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `blockquote`           | `CommonEntity`      | `<blockquote class="tg-blockquote"> ... </blockquote>`                                                                                                                             |
+| `bold`                 | `CommonEntity`      | `<b class="tg-bold"> ... </b>`                                                                                                                                                     |
+| `bot_command`          | `CommonEntity`      | `<span class="tg-bot-command"> ... </span>`                                                                                                                                        |
+| `cashtag`              | `CommonEntity`      | `<span class="tg-cashtag"> ... </span>`                                                                                                                                            |
+| `code`                 | `CommonEntity`      | `<code class="tg-code"> ... </code>`                                                                                                                                               |
+| `custom_emoji`         | `CustomEmojiEntity` | `<span class="tg-custom-emoji" data-custom-emoji-id="${options.entity.custom_emoji_id}"> ... </span>`                                                                              |
+| `email`                | `CommonEntity`      | `<a class="tg-email" href="mailto:${options.text}"> ... </a>`                                                                                                                      |
+| `expandableBlockquote` | `CommonEntity`      | `<blockquote class="tg-expandable-blockquote"> ... </blockquote>`                                                                                                                  |
+| `hashtag`              | `CommonEntity`      | `<span class="tg-hashtag"> ... </span>`                                                                                                                                            |
+| `italic`               | `CommonEntity`      | `<i class="tg-italic"> ... </i>`                                                                                                                                                   |
+| `mention`              | `CommonEntity`      | `<a class="tg-mention" href="https://t.me/${username}"> ... </a>`                                                                                                                  |
+| `phone_number`         | `CommonEntity`      | `<a class="tg-phone-number" href="tel:${options.text}"> ... </a>`                                                                                                                  |
+| `pre`                  | `PreEntity`         | `<pre class="tg-pre-code"><code class="language-${options.entity.language} ... </code></pre>` or `<pre class="tg-pre"> ... </pre>`                                                 |
+| `spoiler`              | `CommonEntity`      | `<span class="tg-spoiler"> ... </span>`                                                                                                                                            |
+| `strikethrough`        | `CommonEntity`      | `<del class="tg-strikethrough"> ... </del>`                                                                                                                                        |
+| `text_link`            | `TextLinkEntity`    | `<a class="tg-text-link" href="${options.entity.url}"> ... </a>`                                                                                                                   |
+| `text_mention`         | `TextMentionEntity` | `<a class="tg-text-mention" href="https://t.me/${options.entity.user.username}"> ... </a>` or `<a class="tg-text-mention" href="tg://user?id=${options.entity.user.id}"> ... </a>` |
+| `underline`            | `CommonEntity`      | `<span class="tg-bot-command"> ... </span>`                                                                                                                                        |
+| `url`                  | `CommonEntity`      | `<a class="tg-url" href="${options.text}"> ... </a>`                                                                                                                               |
 
 If you are unsure which interface is correct, refer to how the Renderer or RendererHtml is implemented.
 
@@ -142,20 +139,20 @@ The output text is sanitized by default to ensure proper HTML rendering and prev
 
 For example, the result `<b>Bold</b> & <i>Italic</i>` will be sanitized to `<b>Bold</b> &amp; <i>Italic</i>`.
 
-You can override this behavior by specifying a `textSanitizer` function when instantiating the [`EntitiesParser`](https://github.com/quadratz/telegram-entities-parser/blob/main/src/mod.ts):
+You can override this behavior by specifying a `textSanitizer` when instantiating the [`EntitiesParser`](https://github.com/quadratz/telegram-entities-parser/blob/main/src/mod.ts):
 
-- If you do not specify `textSanitizer`, it will default to using `escapeHtml` as the sanitizer.
+- If you do not specify `textSanitizer`, it will default to using [`sanitizerHtml`](https://github.com/quadratz/telegram-entities-parser/blob/main/src/utils/sanitizer_html.ts) as the sanitizer.
 - Setting the value to `false` will skip sanitization, keeping the output text as the original.
   This is not recommended, as it may result in incorrect rendering and make your application vulnerable to XSS attacks.
   Ensure proper handling if you choose this option.
-- If you provide a `TextSanitizer` function, it will be used instead of the default sanitizer.
+- If you provide a function, it will be used instead of the default sanitizer.
 
 Example,
 
 ```ts
-const myTextSanitizer: TextSanitizer = (text: string): string =>
+const myTextSanitizer: TextSanitizer = (options: TextSanitizerOption): string =>
   // Replace dangerous character
-  text.replace(/[&<>"']/g, (match) => {
+  options.text.replace(/[&<>"']/g, (match) => {
     switch (match) {
       case "&":
         return "&amp;";
@@ -182,7 +179,7 @@ If you face problems similar to those listed below, you might be able to resolve
 
 ### Copy and Forward the Same Message
 
-Use `forwardMessage`(https://core.telegram.org/bots/api#forwardmessage) to forward messages of any kind.
+Use [`forwardMessage`](https://core.telegram.org/bots/api#forwardmessage) to forward messages of any kind.
 
 You can also use the [`copyMessage`](https://core.telegram.org/bots/api#copymessage) API, which performs the same action but does not include a link to the original message.
 [`copyMessage`](https://core.telegram.org/bots/api#copymessage) behaves like copying the message and sending it back to Telegram, making it appear as a regular message rather than a forwarded one.
@@ -236,9 +233,9 @@ Check it out if you're interested: <https://grammy.dev/plugins/parse-mode>.
 Currently no.
 
 You can convert the HTML result into any format you want since HTML is widely supported.
-It’s also relatively easy to convert HTML to Markdown using other packages (e.g., [unified](https://unifiedjs.com/learn/recipe/remark-html/#how-to-turn-html-into-markdown), [turndown](https://www.npmjs.com/package/turndown), [@wcj/html-to-markdown](https://www.npmjs.com/package/@wcj/html-to-markdown), etc).
+It's also relatively easy to convert HTML to Markdown using other packages (e.g., [unified](https://unifiedjs.com/learn/recipe/remark-html/#how-to-turn-html-into-markdown), [turndown](https://www.npmjs.com/package/turndown), [@wcj/html-to-markdown](https://www.npmjs.com/package/@wcj/html-to-markdown), etc).
 
-Here’s an example using [unified](https://unifiedjs.com/learn/recipe/remark-html/#how-to-turn-html-into-markdown) for example,
+Here's an example using [unified](https://unifiedjs.com/learn/recipe/remark-html/#how-to-turn-html-into-markdown) for example,
 
 ```ts
 import { EntitiesParser, type Message } from "@qz/telegram-entities-parser";
@@ -267,16 +264,16 @@ bot.on(":text", async (ctx) => {
 
 Markdown has many variants, such as [GitHub Flavoured Markdown (GFM)](https://github.github.com/gfm/), [CommonMark](https://commonmark.org/), and even Telegram's own [MarkdownV2](https://core.telegram.org/bots/api#markdownv2-style).
 Supporting Markdown output would require handling these variants.
-However, we currently don’t have a strong reason to support Markdown conversions (at least for my own use).
+However, we currently don't have a strong reason to support Markdown conversions (at least for my own use).
 
-This doesn’t mean we completely rule out the idea.
+This doesn't mean we completely rule out the idea.
 If there is a compelling reason to support Markdown, we are open to implementing it in the future.
 
 ### Can I Use This Package with Other Frameworks?
 
 Yes, it should work perfectly fine.
 
-The type interface for the required parameters is not specific to grammY, so you should not encounter any type errors even if the type implementation differs.
+The type interface for the required parameters is not specific to [grammY](https://grammy.dev), so you should not encounter any type errors even if the type implementation differs.
 
 ### Can I Use This for Runtimes Other Than Deno?
 

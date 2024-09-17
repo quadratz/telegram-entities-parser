@@ -1,9 +1,8 @@
-import type { Message } from "./types/message.ts";
-import { getEntities } from "./utils/getEntities.ts";
-import type { Renderer } from "./renderers/renderer.ts";
-import { RendererHtml } from "./renderers/renderer_html.ts";
-import { escapeHtml, type TextSanitizer } from "./utils/escapeHtml.ts";
-import { processEntity } from "./utils/processEntity.ts";
+import { sanitizerHtml } from "./utils/sanitizer_html.ts";
+import { getEntities } from "./utils/get_entities.ts";
+import { processEntity } from "./utils/process_entity.ts";
+import { RendererHtml } from "../mod.ts";
+import type { Message, Renderer, TextSanitizer } from "../types.ts";
 
 /**
  * Parses Telegram entities and formats them using the specified renderer.
@@ -32,7 +31,7 @@ import { processEntity } from "./utils/processEntity.ts";
  * Function or flag to sanitize text before rendering.
  *
  * Pass `false` to skip sanitization (not recommended, as it may break HTML rendering and expose you to XSS attacks).
- * Defaults to {@linkcode escapeHtml}.
+ * Defaults to {@linkcode sanitizerHtml}.
  */
 export class EntitiesParser {
   private _renderer: Renderer;
@@ -44,9 +43,9 @@ export class EntitiesParser {
     if (options?.textSanitizer) {
       this._textSanitizer = options.textSanitizer;
     } else if (options?.textSanitizer === false) {
-      this._textSanitizer = (text) => text;
+      this._textSanitizer = ({ text }) => text;
     } else {
-      this._textSanitizer = escapeHtml;
+      this._textSanitizer = sanitizerHtml;
     }
   }
 
@@ -54,7 +53,7 @@ export class EntitiesParser {
    * Parses the entities in the provided message.
    *
    * @param {ParseOption} options
-   * An object containing the message and optional data for the renderer.
+   * An object containing the message for the renderer.
    *
    * @param {ParseOption["message"]} [options.message]
    * [Telegram message](https://core.telegram.org/bots/api#message).
@@ -68,7 +67,7 @@ export class EntitiesParser {
     const { text, entities } = getEntities(message);
 
     // Return the sanitized text immediately if there are no entities.
-    if (entities.length === 0) return this._textSanitizer(text);
+    if (entities.length === 0) return this._textSanitizer({ text });
 
     let result: string = "";
     // Tracks the end of the last processed text segment.
@@ -81,7 +80,7 @@ export class EntitiesParser {
       const regularText = text.slice(lastProcessedOffset, entity.offset);
 
       // Append the sanitized text segment.
-      result += this._textSanitizer(regularText);
+      result += this._textSanitizer({ text: regularText });
 
       // Process the current entity and get its formatted HTML text.
       const { index: newIndex, text: htmlText, endOfEntity } = processEntity({
@@ -129,13 +128,13 @@ export interface EntitiesParserOption {
    * - A {@linkcode TextSanitizer} function: Custom text sanitizer function used to clean or modify the text content.
    *
    * If a function is provided, it will be used to sanitize the text before rendering.
-   * If not specified, the default sanitizer {@linkcode escapeHtml} will be used.
+   * If not specified, the default sanitizer {@linkcode sanitizerHtml} will be used.
    */
   textSanitizer?: false | TextSanitizer;
 }
 
 /**
- * Represent option for {@linkcode EntitiesParser.parse} method.
+ * Represent options for {@linkcode EntitiesParser.parse} method.
  */
 export interface ParseOption {
   /**

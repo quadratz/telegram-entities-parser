@@ -1,12 +1,12 @@
 import type { Renderer, RendererOutput } from "../renderers/renderer.ts";
 import type { MessageEntity } from "../types/message_entity.ts";
 
-export function renderEntity(option: {
+export function renderEntity(options: {
   renderer: Renderer;
   text: string;
   entity: MessageEntity;
 }): RendererOutput {
-  const { renderer, text, entity } = option;
+  const { renderer, text, entity } = options;
   switch (entity.type) {
     case "blockquote":
       return renderer.blockquote({ text, entity });

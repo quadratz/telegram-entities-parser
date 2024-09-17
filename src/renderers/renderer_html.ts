@@ -3,23 +3,22 @@ import type {
   CommonEntity,
   CustomEmojiEntity,
   PreEntity,
+  Renderer,
+  RendererOutput,
   TextLinkEntity,
   TextMentionEntity,
-} from "../types/message_entity.ts";
-import type { RendererOutput } from "../renderers/renderer.ts";
-import type { Renderer } from "./renderer.ts";
+} from "../../types.ts";
 
 /**
- * HTML Renderer.
+ * Renders to HTML.
  *
  * This renderer converts entities into semantic HTML, adhering closely to best practices and standards.
  * It can be fully overridden or extended to customize the output.
  *
- * Quick Example: Overriding the Bold Type Output.
- *
+ * @example Overriding the Bold Type Output.
  * ```ts
  * class MyRenderer extends RendererHtml {
- *   bold(option: { text: string, entity: CommonEntity }): RendererOutput {
+ *   bold(options: { text: string, entity: CommonEntity }): RendererOutput {
  *     return {
  *       prefix: `<strong class="tg-bold">`,
  *       suffix: "</strong>",
@@ -37,7 +36,7 @@ import type { Renderer } from "./renderer.ts";
  */
 export class RendererHtml implements Renderer {
   blockquote(
-    option: { text: string; entity: CommonEntity },
+    options: { text: string; entity: CommonEntity },
   ): RendererOutput {
     return {
       prefix: `<blockquote class="tg-blockquote">`,
@@ -46,7 +45,7 @@ export class RendererHtml implements Renderer {
   }
 
   bold(
-    option: { text: string; entity: CommonEntity },
+    options: { text: string; entity: CommonEntity },
   ): RendererOutput {
     return {
       prefix: `<b class="tg-bold">`,
@@ -54,7 +53,7 @@ export class RendererHtml implements Renderer {
     };
   }
 
-  botCommand(option: {
+  botCommand(options: {
     text: string;
     entity: CommonEntity;
   }): RendererOutput {
@@ -65,7 +64,7 @@ export class RendererHtml implements Renderer {
   }
 
   cashtag(
-    option: { text: string; entity: CommonEntity },
+    options: { text: string; entity: CommonEntity },
   ): RendererOutput {
     return {
       prefix: `<span class="tg-cashtag">`,
@@ -74,7 +73,7 @@ export class RendererHtml implements Renderer {
   }
 
   code(
-    option: { text: string; entity: CommonEntity },
+    options: { text: string; entity: CommonEntity },
   ): RendererOutput {
     return {
       prefix: `<code class="tg-code">`,
@@ -83,9 +82,9 @@ export class RendererHtml implements Renderer {
   }
 
   customEmoji(
-    option: { text: string; entity: CustomEmojiEntity },
+    options: { text: string; entity: CustomEmojiEntity },
   ): RendererOutput {
-    const emojiId = option.entity.custom_emoji_id ?? "";
+    const emojiId = options.entity.custom_emoji_id ?? "";
     return {
       prefix:
         `<span class="tg-custom-emoji" data-custom-emoji-id="${emojiId}">`,
@@ -94,15 +93,15 @@ export class RendererHtml implements Renderer {
   }
 
   email(
-    option: { text: string; entity: CommonEntity },
+    options: { text: string; entity: CommonEntity },
   ): RendererOutput {
     return {
-      prefix: `<a class="tg-email" href="mailto:${option.text}">`,
+      prefix: `<a class="tg-email" href="mailto:${options.text}">`,
       suffix: "</a>",
     };
   }
 
-  expandableBlockquote(option: {
+  expandableBlockquote(options: {
     text: string;
     entity: CommonEntity;
   }): RendererOutput {
@@ -113,7 +112,7 @@ export class RendererHtml implements Renderer {
   }
 
   hashtag(
-    option: { text: string; entity: CommonEntity },
+    options: { text: string; entity: CommonEntity },
   ): RendererOutput {
     return {
       prefix: `<span class="tg-hashtag">`,
@@ -122,7 +121,7 @@ export class RendererHtml implements Renderer {
   }
 
   italic(
-    option: { text: string; entity: CommonEntity },
+    options: { text: string; entity: CommonEntity },
   ): RendererOutput {
     return {
       prefix: `<i class="tg-italic">`,
@@ -131,7 +130,7 @@ export class RendererHtml implements Renderer {
   }
 
   mention(
-    option: { text: string; entity: CommonEntity },
+    options: { text: string; entity: CommonEntity },
   ): RendererOutput {
     /**
      * Remove the leadding `@` symbol from the text.
@@ -139,28 +138,28 @@ export class RendererHtml implements Renderer {
      * Mention always start with `@`.
      * Examples: `@telegram`, `@durov`, `@grammyjs`
      */
-    const username = option.text.slice(1);
+    const username = options.text.slice(1);
     return {
       prefix: `<a class="tg-mention" href="https://t.me/${username}">`,
       suffix: "</a>",
     };
   }
 
-  phoneNumber(option: {
+  phoneNumber(options: {
     text: string;
     entity: CommonEntity;
   }): RendererOutput {
     return {
-      prefix: `<a class="tg-phone-number" href="tel:${option.text}">`,
+      prefix: `<a class="tg-phone-number" href="tel:${options.text}">`,
       suffix: "</a>",
     };
   }
 
-  pre(option: { text: string; entity: PreEntity }): RendererOutput {
-    if ("language" in option.entity) {
+  pre(options: { text: string; entity: PreEntity }): RendererOutput {
+    if ("language" in options.entity) {
       return {
         prefix:
-          `<pre class="tg-pre-code"><code class="language-${option.entity.language}">`,
+          `<pre class="tg-pre-code"><code class="language-${options.entity.language}">`,
         suffix: "</code></pre>",
       };
     }
@@ -171,7 +170,7 @@ export class RendererHtml implements Renderer {
   }
 
   spoiler(
-    option: { text: string; entity: CommonEntity },
+    options: { text: string; entity: CommonEntity },
   ): RendererOutput {
     return {
       prefix: `<span class="tg-spoiler">`,
@@ -179,7 +178,7 @@ export class RendererHtml implements Renderer {
     };
   }
 
-  strikethrough(option: {
+  strikethrough(options: {
     text: string;
     entity: CommonEntity;
   }): RendererOutput {
@@ -190,15 +189,15 @@ export class RendererHtml implements Renderer {
   }
 
   textLink(
-    option: { text: string; entity: TextLinkEntity },
+    options: { text: string; entity: TextLinkEntity },
   ): RendererOutput {
     return {
-      prefix: `<a class="tg-text-link" href="${option.entity.url}">`,
+      prefix: `<a class="tg-text-link" href="${options.entity.url}">`,
       suffix: `</a>`,
     };
   }
 
-  textMention(option: {
+  textMention(options: {
     text: string;
     entity: TextMentionEntity;
   }): RendererOutput {
@@ -209,9 +208,9 @@ export class RendererHtml implements Renderer {
      *
      * @see https://core.telegram.org/bots/api#messageentity
      */
-    const href = (option.entity.user.username)
-      ? `https://t.me/${option.entity.user.username}`
-      : `tg://user?id=${option.entity.user.id}`;
+    const href = (options.entity.user.username)
+      ? `https://t.me/${options.entity.user.username}`
+      : `tg://user?id=${options.entity.user.id}`;
 
     return {
       prefix: `<a class="tg-text-mention" href="${href}">`,
@@ -220,7 +219,7 @@ export class RendererHtml implements Renderer {
   }
 
   underline(
-    option: { text: string; entity: CommonEntity },
+    options: { text: string; entity: CommonEntity },
   ): RendererOutput {
     return {
       prefix: `<span class="tg-underline">`,
@@ -229,10 +228,10 @@ export class RendererHtml implements Renderer {
   }
 
   url(
-    option: { text: string; entity: CommonEntity },
+    options: { text: string; entity: CommonEntity },
   ): RendererOutput {
     return {
-      prefix: `<a class="tg-url" href="${option.text}">`,
+      prefix: `<a class="tg-url" href="${options.text}">`,
       suffix: "</a>",
     };
   }

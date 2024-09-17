@@ -1,4 +1,9 @@
-import type { CommonEntity, RendererOutput, TextSanitizer } from "../types.ts";
+import type {
+  CommonEntity,
+  RendererOutput,
+  TextSanitizer,
+  TextSanitizerOption,
+} from "../types.ts";
 import { EntitiesParser, RendererHtml } from "../mod.ts";
 import { assertStrictEquals } from "jsr:@std/assert@1.0.5";
 import { message } from "./fixtures/custom_config_message.ts";
@@ -27,8 +32,10 @@ Deno.test("Should use custom renderer", () => {
 Deno.test("Should use custom sanitizer", async (t) => {
   await t.step("Should sanitize the text", () => {
     {
-      const myTextSanitizer: TextSanitizer = (text: string): string =>
-        text.replace(/[&<>]/g, (match) => {
+      const myTextSanitizer: TextSanitizer = (
+        options: TextSanitizerOption,
+      ): string =>
+        options.text.replace(/[&<>]/g, (match) => {
           switch (match) {
             case "&":
               return "&amp;&amp;";

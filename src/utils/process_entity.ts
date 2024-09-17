@@ -1,7 +1,7 @@
 import type { Renderer } from "../renderers/renderer.ts";
 import type { MessageEntity } from "../types/message_entity.ts";
-import type { TextSanitizer } from "./escapeHtml.ts";
-import { renderEntity } from "./renderEntity.ts";
+import type { TextSanitizer } from "./sanitizer_html.ts";
+import { renderEntity } from "./render_entity.ts";
 
 /**
  * Processes a single message entity and its surrounding text, applying the specified renderer to format the entity.
@@ -43,7 +43,7 @@ export function processEntity(
       entity.offset + entity.length,
     );
 
-    const escapedText = textSanitizer(remainingText);
+    const escapedText = textSanitizer({ text: remainingText });
 
     return {
       index: lastIndex,
@@ -51,7 +51,7 @@ export function processEntity(
       endOfEntity: entity.offset + entity.length,
     };
   } else {
-    const escapedText = textSanitizer(entityText);
+    const escapedText = textSanitizer({ text: entityText });
 
     return {
       index,

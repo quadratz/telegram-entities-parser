@@ -1,19 +1,23 @@
 /**
- * Escapes text for safe interpolation into HTML text content.
+ * Sanitize text for safe interpolation into HTML text content.
  *
  * This is necessary to prevent XSS attacks and ensure that the HTML is rendered correctly.
  *
  * @example Usage
  * ```ts
- * const escaped = escapeHtml('Hello <World> & "Goodbye"');
+ * const text = 'Hello <World> & "Goodbye"'
+ * const escaped = sanitizerHtml({ text });
  * console.log(escaped); // 'Hello &lt;World&gt; &amp; &quot;Goodbye&quot;'
  * ```
  *
- * @param {string} text - The string to escape.
+ * @param {TextSanitizerOption} options
+ * @param {TextSanitizerOption["text"]} options.text The string to escape.
  * @returns {string} The escaped string.
  */
-export const escapeHtml: TextSanitizer = (text: string): string =>
-  text.replace(/[<>&"']/g, (match) => {
+export const sanitizerHtml: TextSanitizer = (
+  options: TextSanitizerOption,
+): string =>
+  options.text.replace(/[<>&"']/g, (match) => {
     switch (match) {
       case "&":
         return "&amp;";
@@ -33,8 +37,15 @@ export const escapeHtml: TextSanitizer = (text: string): string =>
 /**
  * Represents a function that sanitizes text to prevent security vulnerabilities or formatting issues.
  *
- * For an example implementation, see {@linkcode escapeHtml}.
+ * For an example implementation, see {@linkcode sanitizerHtml}.
  */
 export interface TextSanitizer {
-  (text: string): string;
+  (options: TextSanitizerOption): string;
+}
+
+/**
+ * Represent options for {@linkcode TextSanitizer} function.
+ */
+export interface TextSanitizerOption {
+  text: string;
 }

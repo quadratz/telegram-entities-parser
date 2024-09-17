@@ -1,4 +1,4 @@
-import type { MessageEntity } from "./message_entity.ts";
+import type { MessageEntity } from "../../types.ts";
 
 /**
  * This object represents **partial** [Telegram message](https://core.telegram.org/bots/api#message).
