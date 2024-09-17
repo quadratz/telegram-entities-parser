@@ -15,7 +15,7 @@ import type { RendererHtml } from "./renderer_html.ts";
  * This class serves as a base for implementing rendering logic for different formats, such as HTML.
  * To customize rendering behavior, extend this class and override its methods.
  * For a concrete implementation, see {@link RendererHtml}.
- * For complete examples, visit: <https://github.com/quadratz/telegram-entity-parser>.
+ * For complete examples, visit: <https://github.com/quadratz/telegram-entities-parser>.
  */
 export class Renderer {
   blockquote(

@@ -1,10 +1,10 @@
-# telegram-entity-parser
+# telegram-entities-parser
 
-[![JSR Badge](https://jsr.io/badges/@qz/telegram-entity-parser?style=flat-square)](https://jsr.io/@qz/telegram-entity-parser)
+[![JSR Badge](https://jsr.io/badges/@qz/telegram-entities-parser?style=flat-square)](https://jsr.io/@qz/telegram-entities-parser)
 
 Converts [Telegram entities](https://core.telegram.org/bots/api#messageentity)
 to semantic HTML.
-Specially designed for [grammY](https://grammy.dev/plugins/telegram-entity-parser), but should also compatible with other framework.
+Specially designed for [grammY](https://grammy.dev/plugins/telegram-entities-parser), but should also compatible with other framework.
 
 ## When Should I Use This?
 
@@ -28,15 +28,15 @@ Run the following command in your terminal based on your package manager:
 
 ```sh
 # Deno
-deno add @qz/telegram-entity-parser
+deno add @qz/telegram-entities-parser
 # Bun
-bunx jsr add @qz/telegram-entity-parser
+bunx jsr add @qz/telegram-entities-parser
 # pnpm
-pnpm dlx jsr add @qz/telegram-entity-parser
+pnpm dlx jsr add @qz/telegram-entities-parser
 # Yarn
-yarn dlx jsr add @qz/telegram-entity-parser
+yarn dlx jsr add @qz/telegram-entities-parser
 # npm
-npx jsr add @qz/telegram-entity-parser
+npx jsr add @qz/telegram-entities-parser
 ```
 
 ## Simple Usage
@@ -45,7 +45,7 @@ Using this plugin is straightforward.
 Here’s a quick example:
 
 ```ts
-import { EntitiesParser, type Message } from "@qz/telegram-entity-parser";
+import { EntitiesParser, type Message } from "@qz/telegram-entities-parser";
 
 // For better performance, create the instance outside the function.
 const entitiesParser = new EntitiesParser();
@@ -68,7 +68,7 @@ This package converts entities into semantic HTML, adhering to best practices an
 However, you might find that the provided output is not exactly what you expected.
 
 To address this, you can use your own `renderer` to customize the HTML elements surrounding the text according to your rules.
-You can modify specific rules by extending the default [`RendererHtml`](https://github.com/quadratz/telegram-entity-parser/blob/main/src/renderers/renderer_html.ts) or override all the rules by implementing the [`Renderer`](https://github.com/quadratz/telegram-entity-parser/blob/main/src/renderers/renderer.ts).
+You can modify specific rules by extending the default [`RendererHtml`](https://github.com/quadratz/telegram-entities-parser/blob/main/src/renderers/renderer_html.ts) or override all the rules by implementing the [`Renderer`](https://github.com/quadratz/telegram-entities-parser/blob/main/src/renderers/renderer.ts).
 
 To extend the existing renderer, do the following:
 
@@ -78,7 +78,7 @@ import {
   EntitiesParser,
   RendererHtml,
   type RendererOutput,
-} from "@qz/telegram-entity-parser";
+} from "@qz/telegram-entities-parser";
 
 // Change the rule for bold type entity,
 // but leave the rest of the types as defined by `RendererHtml`.
@@ -142,7 +142,7 @@ The output text is sanitized by default to ensure proper HTML rendering and prev
 
 For example, the result `<b>Bold</b> & <i>Italic</i>` will be sanitized to `<b>Bold</b> &amp; <i>Italic</i>`.
 
-You can override this behavior by specifying a `textSanitizer` function when instantiating the [`EntitiesParser`](https://github.com/quadratz/telegram-entity-parser/blob/main/src/mod.ts):
+You can override this behavior by specifying a `textSanitizer` function when instantiating the [`EntitiesParser`](https://github.com/quadratz/telegram-entities-parser/blob/main/src/mod.ts):
 
 - If you do not specify `textSanitizer`, it will default to using `escapeHtml` as the sanitizer.
 - Setting the value to `false` will skip sanitization, keeping the output text as the original.
@@ -241,7 +241,7 @@ It’s also relatively easy to convert HTML to Markdown using other packages (e.
 Here’s an example using [unified](https://unifiedjs.com/learn/recipe/remark-html/#how-to-turn-html-into-markdown) for example,
 
 ```ts
-import { EntitiesParser, type Message } from "@qz/telegram-entity-parser";
+import { EntitiesParser, type Message } from "@qz/telegram-entities-parser";
 import rehypeParse from "rehype-parse";
 import rehypeRemark from "rehype-remark";
 import remarkStringify from "remark-stringify";
@@ -290,7 +290,7 @@ Refer to the [installation instructions](#installation) for details on how to se
 
 No.
 
-Currently, this package is only available on [JSR](https://jsr.io/qz/telegram-entity-parser).
+Currently, this package is only available on [JSR](https://jsr.io/qz/telegram-entities-parser).
 JSR broadly supports other package managers, so you can use this package with npm as well.
 
 Refer to the [installation instructions](#installation) for details on how to set it up with your package manager.

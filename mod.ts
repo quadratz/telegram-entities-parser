@@ -1,7 +1,7 @@
 /**
  * Parses Telegram entities and formats them using the specified renderer.
  *
- * For more details and examples, visit https://github.com/quadratz/telegram-entity-parser.
+ * For more details and examples, visit https://github.com/quadratz/telegram-entities-parser.
  * @module
  */
 export { EntitiesParser } from "./src/mod.ts";

@@ -33,7 +33,7 @@ import type { Renderer } from "./renderer.ts";
  *
  * In this example, we extend the `RendererHtml` class to customize the rendering of bold entities by defining a `bold` method that returns the appropriate HTML tags for bold formatting.
  *
- * For more examples, visit: <https://github.com/quadratz/telegram-entity-parser>.
+ * For more examples, visit: <https://github.com/quadratz/telegram-entities-parser>.
  */
 export class RendererHtml implements Renderer {
   blockquote(

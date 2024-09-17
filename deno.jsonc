@@ -1,5 +1,5 @@
 {
-  "name": "@qz/telegram-entity-parser",
+  "name": "@qz/telegram-entities-parser",
   "version": "1.0.0-alpha.1",
   "exports": {
     ".": "./mod.ts",

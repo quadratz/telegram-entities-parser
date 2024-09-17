@@ -10,7 +10,7 @@ import { processEntity } from "./utils/processEntity.ts";
  *
  * You can customize how entities are wrapped with HTML tags by providing a custom renderer or extending the default one. The renderer affects only the HTML tags around the entities, not the text itself.
  *
- * For more details and examples, visit <https://github.com/quadratz/telegram-entity-parser>.
+ * For more details and examples, visit <https://github.com/quadratz/telegram-entities-parser>.
  *
  * @example Usage
  * ```ts
