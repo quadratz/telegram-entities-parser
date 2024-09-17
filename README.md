@@ -239,7 +239,7 @@ Here's an example using [unified](https://unifiedjs.com/learn/recipe/remark-html
 
 ```ts
 import { EntitiesParser } from "@qz/telegram-entities-parser";
-import { type Message } from "@qz/telegram-entities-parser/types";
+import type { Message } from "@qz/telegram-entities-parser/types";
 import rehypeParse from "rehype-parse";
 import rehypeRemark from "rehype-remark";
 import remarkStringify from "remark-stringify";
