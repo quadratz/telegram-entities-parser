@@ -14,7 +14,7 @@ Deno.test("Should use custom renderer", () => {
       _option: { text: string; entity: CommonEntity },
     ): RendererOutput {
       return {
-        prefix: `<strong class="tg-bold">`,
+        prefix: '<strong class="tg-bold">',
         suffix: "</strong>",
       };
     }

@@ -20,7 +20,7 @@ import type {
  * class MyRenderer extends RendererHtml {
  *   bold(options: { text: string, entity: CommonEntity }): RendererOutput {
  *     return {
- *       prefix: `<strong class="tg-bold">`,
+ *       prefix: '<strong class="tg-bold">',
  *       suffix: "</strong>",
  *     };
  *   }

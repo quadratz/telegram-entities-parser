@@ -42,7 +42,8 @@ Using this plugin is straightforward.
 Here's a quick example:
 
 ```ts
-import { EntitiesParser, type Message } from "@qz/telegram-entities-parser";
+import { EntitiesParser } from "@qz/telegram-entities-parser";
+import type { Message } from "@qz/telegram-entities-parser/types";
 
 // For better performance, create the instance outside the function.
 const entitiesParser = new EntitiesParser();
@@ -70,12 +71,11 @@ You can modify specific rules by extending the default [`RendererHtml`](https://
 To extend the existing `renderer`, do the following:
 
 ```ts
-import {
-  type CommonEntity,
-  EntitiesParser,
-  RendererHtml,
-  type RendererOutput,
-} from "@qz/telegram-entities-parser";
+import { EntitiesParser, RendererHtml } from "@qz/telegram-entities-parser";
+import type {
+  CommonEntity,
+  RendererOutput,
+} from "@qz/telegram-entities-parser/types";
 
 // Change the rule for bold type entity,
 // but leave the rest of the types as defined by `RendererHtml`.
@@ -84,7 +84,7 @@ class MyRenderer extends RendererHtml {
     options: { text: string; entity: CommonEntity },
   ): RendererOutput {
     return {
-      prefix: `<strong class="tg-bold">`,
+      prefix: '<strong class="tg-bold">',
       suffix: "</strong>",
     };
   }
@@ -123,7 +123,7 @@ Here is the full list of interfaces and the output for each entity type:
 | `underline`            | `CommonEntity`      | `<span class="tg-bot-command"> ... </span>`                                                                                                                                        |
 | `url`                  | `CommonEntity`      | `<a class="tg-url" href="${options.text}"> ... </a>`                                                                                                                               |
 
-If you are unsure which interface is correct, refer to how the Renderer or RendererHtml is implemented.
+If you are unsure which interface is correct, refer to how the [Renderer](https://github.com/quadratz/telegram-entities-parser/blob/main/src/renderers/renderer.ts) or [RendererHtml](https://github.com/quadratz/telegram-entities-parser/blob/main/src/renderers/renderer_html.ts) is implemented.
 
 ### Customize the Text Sanitizer
 
@@ -238,7 +238,8 @@ It's also relatively easy to convert HTML to Markdown using other packages (e.g.
 Here's an example using [unified](https://unifiedjs.com/learn/recipe/remark-html/#how-to-turn-html-into-markdown) for example,
 
 ```ts
-import { EntitiesParser, type Message } from "@qz/telegram-entities-parser";
+import { EntitiesParser } from "@qz/telegram-entities-parser";
+import { type Message } from "@qz/telegram-entities-parser/types";
 import rehypeParse from "rehype-parse";
 import rehypeRemark from "rehype-remark";
 import remarkStringify from "remark-stringify";
