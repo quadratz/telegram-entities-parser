@@ -1,0 +1,29 @@
+{
+  "name": "@qz/telegram-entity-parser",
+  "version": "1.0.0-alpha.1",
+  "exports": {
+    ".": "./mod.ts",
+    "./types": "./types.ts"
+  },
+  "tasks": {
+    "mod": "deno run src/mod.ts",
+    "check": "deno lint && deno fmt --check && deno test && deno publish --dry-run"
+  },
+  "lint": {
+    "rules": {
+      "exclude": [
+        "no-explicit-any"
+      ]
+    }
+  },
+  "fmt": {
+    "proseWrap": "preserve"
+  },
+  "publish": {
+    "exclude": [
+      ".github",
+      ".vscode",
+      "tests"
+    ]
+  }
+}
