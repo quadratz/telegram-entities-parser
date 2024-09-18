@@ -235,7 +235,7 @@ Currently no.
 You can convert the HTML result into any format you want since HTML is widely supported.
 It's also relatively easy to convert HTML to Markdown using other packages (e.g., [unified](https://unifiedjs.com/learn/recipe/remark-html/#how-to-turn-html-into-markdown), [turndown](https://www.npmjs.com/package/turndown), [@wcj/html-to-markdown](https://www.npmjs.com/package/@wcj/html-to-markdown), etc).
 
-Here's an example using [unified](https://unifiedjs.com/learn/recipe/remark-html/#how-to-turn-html-into-markdown) for example,
+Here's an example using [unified](https://unifiedjs.com/learn/recipe/remark-html/#how-to-turn-html-into-markdown),
 
 ```ts
 import { EntitiesParser } from "@qz/telegram-entities-parser";
