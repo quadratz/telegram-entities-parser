@@ -5,12 +5,12 @@ import type {
   TextSanitizerOption,
 } from "../types.ts";
 import { EntitiesParser, RendererHtml } from "../mod.ts";
-import { assertStrictEquals } from "jsr:@std/assert@1.0.5";
+import { assertStrictEquals } from "jsr:@std/assert@1.0.6";
 import { message } from "./fixtures/custom_config_message.ts";
 
 Deno.test("Should use custom renderer", () => {
   class MyRenderer extends RendererHtml {
-    bold(
+    override bold(
       _option: { text: string; entity: CommonEntity },
     ): RendererOutput {
       return {
